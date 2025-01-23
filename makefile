@@ -43,4 +43,4 @@ $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
 clean:
-	$(RM) $(OBJDIR)
+	$(RM) $(OBJDIR) $(BUILDDIR)
