@@ -1,12 +1,12 @@
-#include <cstdlib>
-#include <functional>
-#include <string>
-#include <stdint.h>
+//#include <cstdlib>
+//#include <functional>
+//#include <string>
+//#include <stdint.h>
 #include <iostream>
-#include <cstring>
-#include <fstream>
-#include <chrono>
-#include <thread>
+//#include <cstring>
+//#include <fstream>
+//#include <chrono>
+//#include <thread>
 #include "MLX90640_API.h"
 #include "MLX90640_I2C_Driver.h"
 

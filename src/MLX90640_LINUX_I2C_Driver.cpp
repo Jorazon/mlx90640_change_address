@@ -16,8 +16,8 @@
  */
 #include "MLX90640_I2C_Driver.h"
 #include <iostream>
-#include <unistd.h>
-#include <stdio.h>
+//#include <unistd.h>
+//#include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
 #include <linux/i2c-dev.h>
