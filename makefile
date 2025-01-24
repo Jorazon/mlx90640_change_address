@@ -1,46 +1,50 @@
-OUT = change_address
+PROJECTNAME=change_address
 
-CXX = g++
-CFLAGS = 
-CPPFLAGS = 
-RM = rm -fr
+SRCDIR=./src
+OBJDIR=./obj
+INCDIR=./include
+BUILDDIR=./build
 
-SRCDIR = ./src
-OBJDIR = ./obj
-INCDIR = ./include
-BUILDDIR = ./build
+CXX=g++
+COMMONFLAGS=-Wall -Wextra -Wsign-compare -Wpedantic -g
+CFLAGS=$(COMMONFLAGS)
+CPPFLAGS=$(COMMONFLAGS) -Weffc++
+RM=rm -fr
 
-INC_PATH = $(patsubst %, -I%, $(INCDIR))
+# Create include flag list 
+INC_PATH=$(patsubst %,-I%,$(INCDIR))
 
-VPATH=%.o $(OBJDIR)
-VPATH=%.c $(SRCDIR)
-VPATH=%.cpp $(SRCDIR)
-VPATH=%.h $(INCDIR)
-
+# Find all .c and .cpp source files
 SRCS := $(wildcard $(SRCDIR)/*.cpp $(SRCDIR)/*.c)
-OBJS := $(addprefix $(OBJDIR)/, $(addsuffix .o,$(notdir $(basename $(SRCS)))))
 
-$(info $(SRCS))
-$(info $(OBJS))
+# Create object list by replacing source file directory and extension with object file directory and extension
+OBJS := $(addprefix $(OBJDIR)/,$(addsuffix .o,$(notdir $(basename $(SRCS)))))
 
-all: $(OUT)
+default: $(PROJECTNAME)
 
-$(OUT): $(OBJS) $(BUILDDIR)
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(INC_PATH) -o $(BUILDDIR)/$(OUT) $(OBJS)
+# Project requires build directory and object files to link
+$(PROJECTNAME): $(OBJS) $(BUILDDIR)
+	$(CXX) -o $(BUILDDIR)/$(PROJECTNAME) $(OBJS)
 
-$(OBJS) : $(OBJDIR) $(SRCS)
+# Object files require the object directory and source files
+$(OBJS): $(OBJDIR) $(SRCS)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(SRCDIR)/%.c
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(INC_PATH) -c -o $@ $<
+# Compile or assemble the C++ source files into object files, but do not link
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(CPPFLAGS) $(INC_PATH) -c -o $@ $<
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.c
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $(INC_PATH) -c -o $@ $<
+# Compile or assemble the C source files into object files, but do not link
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CXX) $(CFLAGS) $(INC_PATH) -c -o $@ $<
 
+# Create directory for compiled objects
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
+# Create directory for built files
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
+# Delete diercorties and files created by make 
 clean:
 	$(RM) $(OBJDIR) $(BUILDDIR)
